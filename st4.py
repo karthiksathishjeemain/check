@@ -127,8 +127,8 @@ if (len(st.session_state.messages)==0):
 #      """,
 #         unsafe_allow_html=True,
 #     )
-for msg in st.session_state.messages:
-       st.chat_message(msg["role"]).write(msg["content"])
+# for msg in st.session_state.messages:
+#        st.chat_message(msg["role"]).write(msg["content"])
 if len(st.session_state.messages) != 0:
     for msg in st.session_state.messages:
         if msg["role"]=="assistant": 
