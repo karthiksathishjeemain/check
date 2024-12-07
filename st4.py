@@ -1,34 +1,60 @@
+# from groq import Groq
 import streamlit as st
+from importnb import Notebook
 
-# Add some scrollable content
-st.title("Page with Scrollable Content")
-st.write("This is a demo for scrolling content with a fixed header.")
-for i in range(100):
-    st.write(f"Line {i+1}")
+with Notebook():
+    import rag
 
-# Add a sticky header using CSS
-header = """
-<style>
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: #f1f1f1;
+# st.set_page_config(layout="wide")
+# Custom CSS to center the title
+st.markdown(
+    """
+    <style>
+    .centered-title {
         text-align: center;
-        padding-top: 50px;
-        # margin-top : 100000 px;
-        font-size: 20px;
-        color: #a1918e;
-        z-index: 1000; /* Ensure it's above other elements */
+         margin-top: -60px;
     }
-    /* Add margin to the body to avoid overlap with the fixed header */
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+st.markdown("<h2 class='centered-title'>squarestAI</h2>", unsafe_allow_html=True)
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+st.write("")
+
+
+st.logo("./icon.png", size="large")
+
+if "messages" not in st.session_state:
+    st.session_state["messages"] = [
+       
+    ]
+if (len(st.session_state.messages)==0):
+    st.markdown("## How can I help you?")
+
+
+
+for msg in st.session_state.messages:
+       st.chat_message(msg["role"]).write(msg["content"])
+if prompt:=st.chat_input("Enter your Message"):
    
-</style>
-<div class="header">
-    This is a fixed header. It stays at the top!
-</div>
-<div class="main">
-</div>
-"""
-st.markdown(header, unsafe_allow_html=True)
+
+    st.session_state.messages.append(
+        {"role": "user", "content": prompt}
+    )
+    st.chat_message("user").write(prompt)
+
+    config = {"configurable": {"thread_id": "7896323"}}
+    answer = rag.langgraph_agent_executor.invoke(
+        {"messages": [("user", prompt)]},
+        config,
+    )["messages"][-1]
+
+    msg = answer.content
+
+    st.session_state.messages.append({"role": "assistant", "content": msg})
+    st.chat_message("assistant").write(msg)
