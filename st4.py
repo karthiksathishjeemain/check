@@ -27,7 +27,7 @@ st.write("")
 st.write("")
 st.write("")
 
-
+# img = st.image("./icon.png")
 st.logo("./icon.png", size="large")
 
 if "messages" not in st.session_state:
@@ -35,14 +35,17 @@ if "messages" not in st.session_state:
 if len(st.session_state.messages) == 0:
     st.markdown("## How can I help you?")
 
-
 if len(st.session_state.messages) != 0:
     for msg in st.session_state.messages:
-        st.chat_message(msg["role"]).write(msg["content"])
-if prompt := st.chat_input("Enter your Message"):
+     if msg["role"]=="assistant": 
+        st.chat_message(msg["role"], avatar="./icon.png").write(msg["content"])
+     else :
+        st.chat_message(msg["role"],avatar=":material/person:").write(msg["content"])
+     
+if prompt := st.chat_input("Enter your message"):
 
     st.session_state.messages.append({"role": "user", "content": prompt})
-    st.chat_message("user").write(prompt)
+    st.chat_message(name= "person",avatar=":material/person:").write(prompt)
 
     # config = {"configurable": {"thread_id": "7896323"}}
     # answer = rag.langgraph_agent_executor.invoke(
@@ -53,4 +56,5 @@ if prompt := st.chat_input("Enter your Message"):
     # msg = answer.content
 
     st.session_state.messages.append({"role": "assistant", "content": "echo " + prompt})
-    st.chat_message("assistant").write("echo " + prompt)
+    st.chat_message(name="squarest", avatar="./icon.png").write("echo " + prompt)
+st.write("Hello I am not a accurrate information provider")
