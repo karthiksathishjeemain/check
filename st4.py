@@ -18,7 +18,20 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-
+with st.sidebar:
+    options = {
+        "Answer queries": ":material/chat:",
+        "Get SHIELD report":":material/description:",
+        "Book site visit": ":material/tour:",
+        "Home loan sanction":":material/currency_rupee:"
+    }
+    
+    selection = st.pills(
+        "",
+        options=options.keys(),
+        format_func=lambda x: f"{options[x]} {x}",
+        selection_mode="single"
+    )
 st.markdown("<h2 class='centered-title'>squarestAI</h2>", unsafe_allow_html=True)
 st.write("")
 st.write("")
